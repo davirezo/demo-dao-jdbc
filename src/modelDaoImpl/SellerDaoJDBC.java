@@ -83,8 +83,22 @@ public class SellerDaoJDBC implements SellerDao {
     }
 
     @Override
-    public void deletedById(Integer Id) {
+    public void deletedById(Integer id) {
+        PreparedStatement st = null;
+        try{
+            st = conn.prepareStatement("DELETE FROM seller\n" +
+                    "WHERE Id = ?");
 
+            st.setInt(1,id);
+
+           int rows = st.executeUpdate();
+
+        } catch (SQLException e) {
+            throw new DbException(e.getMessage());
+        }
+        finally {
+            DB.closeStatement(st);
+        }
     }
 
     @Override
